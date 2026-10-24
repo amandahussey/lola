@@ -1,7 +1,7 @@
 import json, os, numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from lib import *
-from items import ITEMS, EXCLUDE, OFF_FLOOR
+from items import ITEMS, EXCLUDE, OFF_FLOOR, BED_MESSY, BED_MADE, BED_POSTS, BED_BAND, FLOWER_PILLOW, TEDDY_SHIFT
 from cupfull import make_cup_full
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../assets/room') + '/'
@@ -28,7 +28,7 @@ def alpha_bbox(acc):
     ys = np.nonzero(a.any(1))[0]; xs = np.nonzero(a.any(0))[0]
     return (xs[0], ys[0], xs[-1] + 1, ys[-1] + 1)
 
-used = {l for it in ITEMS for l in it[2]}
+used = {l for it in ITEMS for l in it[2]} | set(BED_MESSY + BED_MADE + BED_POSTS + BED_BAND + FLOWER_PILLOW)
 statics = [i for i, (u, n, h, b) in enumerate(info) if not h and b and i not in used and i not in EXCLUDE]
 statics = [i for i in statics if i != 24] + [25]   # clean dresser in background, sock becomes an item
 
@@ -68,10 +68,25 @@ manifest['items'].append({'id': 'dresser_sock', 'kind': 'tap', 'dest': 'tuck', '
     'tex': 'res://assets/room/items/dresser_sock.png', 'pos': [sc((x0 + x1) / 2), sc((y0 + y1) / 2)],
     'floor': False})
 
-# clean teddy (sits on the pillow when tidied)
-acc = composite([89]); bb = alpha_bbox(acc)
-x0, y0, x1, y1 = save_crop(acc, bb, f'{OUT}/teddy_clean.png')
-manifest['teddy_clean'] = {'tex': 'res://assets/room/teddy_clean.png', 'pos': [sc((x0 + x1) / 2), sc((y0 + y1) / 2)]}
+# ---------- the bed: unmade on top, the made bed (Bedroom_Cleanest) revealed underneath ----------
+def sprite(layers, name, shift=(0, 0)):
+    acc = composite(layers); bb = alpha_bbox(acc)
+    x0, y0, x1, y1 = save_crop(acc, bb, f'{OUT}/{name}.png')
+    return {'tex': f'res://assets/room/{name}.png',
+            'pos': [sc((x0 + x1) / 2 + shift[0]), sc((y0 + y1) / 2 + shift[1])]}
+os.makedirs(OUT + '/bed', exist_ok=True)
+manifest['bed'] = {
+    'messy': {**sprite(BED_MESSY, 'bed/unmade'), 'z': max(BED_MESSY)},
+    'made': {**sprite(BED_MADE, 'bed/made'), 'z': 43},     # above the rumpled duvet, below the shirt
+    'posts': {**sprite(BED_POSTS, 'bed/posts'), 'z': 45},  # below the throw blanket
+}
+# what tidied things turn into once they land: Mr. Teddy sitting up, the flower pillow
+# propped next to him, the throw blanket folded across the foot of the bed
+manifest['settle'] = {
+    'teddy': {**sprite([89], 'bed/teddy', TEDDY_SHIFT), 'z': 60},
+    'flower': {**sprite(FLOWER_PILLOW, 'bed/flower'), 'z': 58},
+    'throw_blanket': {**sprite(BED_BAND, 'bed/band'), 'z': 44},
+}
 
 # ---------- front overlays: static layers drawn above an item they overlap ----------
 for s in statics:
@@ -86,7 +101,6 @@ for s in statics:
 D = {
     'dresser':    (1745, 1330), 'toybox': (2950, 1180), 'dollhouse': (3110, 1690),
     'trash':      (4420, 2230), 'pencil_cup': (4246, 1600),
-    'bed_foot':   (1270, 2240),
 }
 manifest['dests'] = {k: [sc(x), sc(y)] for k, (x, y) in D.items()}
 # containers bounce when something lands in them: [layer-ish bbox centre] for squash
@@ -96,10 +110,7 @@ manifest['bounce'] = {
 }
 # places where tidied things stay visible, by item id: [x, y, scale, rotation_deg]
 SLOTS = {
-    'flower': (745, 1470, 0.42, -8), 'butterfly': (1290, 1560, 0.55, 6),
-    'cloud': (850, 1770, 0.75, 0), 'bunny': (1440, 1720, 0.8, 8),
     'coloring_book': (4060, 1665, 0.40, -10), 'notebook': (4060, 1625, 0.36, 6),
-    'throw_blanket': (1253, 2080, 1.0, -16),
 }
 manifest['slots'] = {k: [sc(x), sc(y), s, r] for k, (x, y, s, r) in SLOTS.items()}
 # ---------- props: containers that bounce when something lands in them ----------

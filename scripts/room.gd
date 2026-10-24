@@ -1,8 +1,10 @@
 extends Node2D
-## Lola's messy room. Tap clothes to fold them up close, tap toys to tidy them.
+## Lola's messy room. First rub the covers to make the bed, then tap clothes to fold them
+## up close and tap toys to tidy them.
 ## When the very last thing is put away, the ring shimmers right where it was.
 
 signal ring_found
+signal halfway  # time for the book's sad moment and Ned's pep talk
 
 const MessItem := preload("res://scripts/mess_item.gd")
 const FoldStation := preload("res://scenes/fold_station.tscn")
@@ -17,6 +19,17 @@ const TAP_TOLERANCE := 38.0   # screen px of forgiveness around small items
 const HINT_AFTER := 9.0       # seconds of no progress before a free hint
 const FLY_Z := 1500
 const INK_COLOR := Color(0.149, 0.102, 0.18)
+const BED_BRUSH := 115.0      # world px smoothed around the finger
+const BED_MASK_SCALE := 8     # the reveal mask is 1/8 of the made-bed picture
+const BED_DONE := 0.6         # how much of the covers must be smoothed
+const REVEAL_SHADER := """
+shader_type canvas_item;
+uniform sampler2D reveal : filter_linear;
+uniform float all_in = 0.0;
+void fragment() {
+	COLOR.a *= max(smoothstep(0.15, 0.85, texture(reveal, UV).r), all_in);
+}
+"""
 
 @onready var _items_root: Node2D = $Items
 @onready var _cam: Camera2D = $Camera2D
@@ -43,6 +56,20 @@ var _drawer_rig: Node2D
 var _drawer_users := 0
 var _drawer_t := 0.0
 var _drawer_tween: Tween
+var _bed_made := false
+var _duvet  # the rumpled duvet item
+var _bed_unmade: Sprite2D
+var _bed_smooth: Sprite2D  # the made bed, revealed where the finger rubs
+var _bed_posts: Sprite2D
+var _bed_hit := BitMap.new()
+var _bed_mask: Image
+var _bed_mask_tex: ImageTexture
+var _bed_inside := PackedByteArray()  # mask cells that are part of the covers
+var _bed_cells := 0
+var _bed_smoothed := 0
+var _bed_last := Vector2.INF
+var _bed_cheered := false
+var _swish_cooldown := 0.0
 
 
 func _ready() -> void:
@@ -61,8 +88,16 @@ func _intro_lines() -> void:
 	await get_tree().create_timer(0.7).timeout
 	_hud.say("We could find it if I could actually see the ground...", 4.0)
 	await get_tree().create_timer(4.4).timeout
-	if _remaining == _total:
-		_hud.ned_say("I'll help, Lola! Tap clothes to fold them. Tap toys to tidy!", 5.0)
+	if _bed_made:
+		return
+	_hud.ned_say("Let's start with your bed. If you only make your bed, you'll feel better!", 4.5,
+		_ned_side_away_from(_bed_smooth.position))
+	_move_camera(_bed_smooth.position, minf(_max_zoom, _min_zoom * 1.7), 1.0)
+	await get_tree().create_timer(4.8).timeout
+	if not _bed_made and _bed_smoothed == 0:
+		_hud.ned_say("Rub the covers with your finger to smooth them out!", 4.0,
+			_ned_side_away_from(_bed_smooth.position))
+		_rub_hint()
 
 
 func _build_room() -> void:
@@ -71,6 +106,9 @@ func _build_room() -> void:
 		item.setup(entry)
 		_items_root.add_child(item)
 		_items.append(item)
+		if item.dest == "make_bed":
+			_duvet = item
+	_build_bed()
 	for o in _data.overlays:
 		var s := Sprite2D.new()
 		s.texture = load(o.tex)
@@ -91,7 +129,141 @@ func _build_room() -> void:
 	_remaining = _total
 
 
+## The unmade bed sits on top; the made bed from the clean room waits above the rumpled
+## duvet, invisible until it's rubbed smooth.
+func _build_bed() -> void:
+	var bed: Dictionary = _data.bed
+	_bed_unmade = _bed_sprite(bed.messy)
+	_bed_smooth = _bed_sprite(bed.made)
+	_bed_posts = _bed_sprite(bed.posts)
+	_bed_posts.modulate.a = 0.0
+	var img := _bed_smooth.texture.get_image()
+	if img.is_compressed():
+		img.decompress()
+	_bed_hit.create_from_image_alpha(img, 0.3)
+	var small := img.duplicate()
+	var mw := ceili(img.get_width() / float(BED_MASK_SCALE))
+	var mh := ceili(img.get_height() / float(BED_MASK_SCALE))
+	small.resize(mw, mh, Image.INTERPOLATE_BILINEAR)
+	_bed_inside.resize(mw * mh)
+	for y in mh:
+		for x in mw:
+			var inside: bool = small.get_pixel(x, y).a > 0.5
+			_bed_inside[y * mw + x] = 1 if inside else 0
+			_bed_cells += 1 if inside else 0
+	_bed_mask = Image.create(mw, mh, false, Image.FORMAT_L8)
+	_bed_mask_tex = ImageTexture.create_from_image(_bed_mask)
+	var mat := ShaderMaterial.new()
+	mat.shader = Shader.new()
+	mat.shader.code = REVEAL_SHADER
+	mat.set_shader_parameter("reveal", _bed_mask_tex)
+	mat.set_shader_parameter("all_in", 0.0)
+	_bed_smooth.material = mat
+
+
+func _bed_sprite(d: Dictionary) -> Sprite2D:
+	var s := Sprite2D.new()
+	s.texture = load(d.tex)
+	s.position = Vector2(d.pos[0], d.pos[1])
+	s.z_index = int(d.z)
+	_items_root.add_child(s)
+	return s
+
+
+func _on_bed(world: Vector2) -> bool:
+	var p := world - _bed_smooth.position + _bed_smooth.texture.get_size() / 2
+	var size := Vector2(_bed_hit.get_size())
+	if p.x >= 0 and p.y >= 0 and p.x < size.x and p.y < size.y and _bed_hit.get_bitv(Vector2i(p)):
+		return true
+	return _duvet.hit_distance(world, 0.0) == 0.0
+
+
+## Smooths the covers under the finger, from the last point to this one.
+func _rub_bed(world: Vector2) -> void:
+	var from := world if _bed_last == Vector2.INF else _bed_last
+	var steps := maxi(1, ceili(from.distance_to(world) / (BED_BRUSH * 0.3)))
+	for i in steps:
+		_dab(from.lerp(world, (i + 1) / float(steps)))
+	_bed_last = world
+	_bed_mask_tex.update(_bed_mask)
+	if _swish_cooldown <= 0.0:
+		_swish_cooldown = 0.22
+		Sfx.play("whoosh", 0.25, -14.0)
+		_sparkle_burst(world, 1)
+	var done := _bed_smoothed / float(maxi(1, _bed_cells))
+	if done > 0.4 and not _bed_cheered:
+		_bed_cheered = true
+		_hud.say("Ooh, it's getting so smooth!", 2.5)
+	if done >= BED_DONE:
+		_finish_bed()
+
+
+func _dab(world: Vector2) -> void:
+	var c := (world - _bed_smooth.position + _bed_smooth.texture.get_size() / 2) / BED_MASK_SCALE
+	var r := BED_BRUSH / BED_MASK_SCALE
+	var w := _bed_mask.get_width()
+	for y in range(maxi(0, floori(c.y - r)), mini(_bed_mask.get_height(), ceili(c.y + r))):
+		for x in range(maxi(0, floori(c.x - r)), mini(w, ceili(c.x + r))):
+			var d := Vector2(x, y).distance_to(c) / r
+			if d >= 1.0:
+				continue
+			var old := _bed_mask.get_pixel(x, y).r
+			var v := maxf(old, minf(1.0, (1.0 - d) * 1.8))
+			if v <= old:
+				continue
+			_bed_mask.set_pixel(x, y, Color(v, v, v))
+			if old < 0.5 and v >= 0.5 and _bed_inside[y * w + x] == 1:
+				_bed_smoothed += 1
+
+
+## The bed is made: the rest of the covers smooth out, the pillow plumps up.
+func _finish_bed() -> void:
+	if _bed_made:
+		return
+	_bed_made = true
+	_bed_last = Vector2.INF
+	_mark_done(_duvet)
+	_hud.ned_hide()
+	Sfx.play("whoosh")
+	var tw := create_tween().set_parallel()
+	tw.tween_property(_bed_smooth.material, "shader_parameter/all_in", 1.0, 0.45)
+	tw.tween_property(_duvet, "modulate:a", 0.0, 0.45)
+	tw.tween_property(_bed_unmade, "modulate:a", 0.0, 0.45)
+	tw.tween_property(_bed_posts, "modulate:a", 1.0, 0.45)
+	var squash := create_tween()
+	squash.tween_property(_bed_smooth, "scale", Vector2(1.03, 0.96), 0.12).set_trans(Tween.TRANS_SINE)
+	squash.tween_property(_bed_smooth, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	for i in 8:
+		_sparkle_burst(_bed_smooth.position + Vector2(randf_range(-320, 320), randf_range(-260, 260)), 2)
+	await tw.finished
+	_duvet.visible = false
+	Sfx.play("sparkle", 0.0, -4.0)
+	_hud.set_mood("happy")
+	_hud.say("See? Isn't that better already?", 3.5)
+	await get_tree().create_timer(3.4).timeout
+	if _remaining > 0 and not _modal:
+		_hud.ned_say("So much better! Now let's put the fluffies on top. Tap Mr. Teddy!", 4.0,
+			_ned_side_away_from(_bed_smooth.position))
+
+
+## A sparkle rubbing back and forth across the covers.
+func _rub_hint() -> void:
+	var s := Sprite2D.new()
+	s.texture = TEX_SPARKLE
+	s.z_index = FLY_Z + 10
+	_items_root.add_child(s)
+	var c := _bed_smooth.position + Vector2(0, 40)
+	var pts := [Vector2(-260, -60), Vector2(200, -150), Vector2(-200, 40), Vector2(260, -40), Vector2(-120, 150), Vector2(240, 90)]
+	s.position = c + pts[0]
+	var tw := create_tween()
+	for p in pts.slice(1):
+		tw.tween_property(s, "position", c + p, 0.28).set_trans(Tween.TRANS_SINE)
+		tw.tween_callback(_sparkle_burst.bind(c + p, 1))
+	tw.tween_callback(s.queue_free)
+
+
 func _process(delta: float) -> void:
+	_swish_cooldown -= delta
 	if _remaining > 0 and not _modal:
 		_idle += delta
 		if _idle > HINT_AFTER:
@@ -142,6 +314,10 @@ func _begin_gesture(index: int, pos: Vector2) -> void:
 	if _ring and not _ring_collected and _to_world(pos).distance_to(_ring.position) < 150.0 + 60.0 / _cam.zoom.x:
 		_collect_ring()
 		return
+	if not _bed_made and _on_bed(_to_world(pos)):
+		_gesture = {"index": index, "start": pos, "item": null, "bed": true, "consumed": false, "panning": false}
+		_bed_last = Vector2.INF
+		return
 	var item = _pick(pos)
 	_gesture = {"index": index, "start": pos, "item": item, "consumed": false, "panning": false}
 	if item:
@@ -152,6 +328,10 @@ func _drag_gesture(event: InputEventScreenDrag) -> void:
 	if _gesture.consumed:
 		return
 	var travel: Vector2 = event.position - _gesture.start
+	if _gesture.get("bed", false):
+		if travel.length() > 12.0 and not _bed_made:
+			_rub_bed(_to_world(event.position))
+		return
 	var item = _gesture.item
 	if item and not item.done:
 		if travel.length() > SWIPE_DIST:
@@ -163,6 +343,13 @@ func _drag_gesture(event: InputEventScreenDrag) -> void:
 
 
 func _end_gesture(pos: Vector2) -> void:
+	if _gesture.get("bed", false):
+		_bed_last = Vector2.INF
+		if not _bed_made and (pos - _gesture.start).length() < SWIPE_DIST and _bed_smoothed == 0:
+			_hud.say("Rub the covers to smooth them out!", 2.5)
+			_rub_hint()
+		_gesture = {}
+		return
 	var item = _gesture.item
 	if item and not _gesture.consumed and not item.done:
 		item.drop()
@@ -199,20 +386,17 @@ func _pick(screen_pos: Vector2):
 # ------------------------------------------------------------------ actions
 
 func _on_tap(item) -> void:
-	if item.kind == "tap":
+	if not _bed_made:
+		_bed_first(item)
+	elif item.kind == "tap":
 		_tidy(item)
-	elif item.dest == "make_bed":
-		item.wiggle()
-		Sfx.play("boop")
-		_hud.say("Swipe to make the bed!", 2.5)
-		_swipe_hint(item)
 	else:
 		_open_fold_station(item)
 
 
-func _on_swipe(item, travel: Vector2) -> void:
-	if item.dest == "make_bed":
-		_make_bed(item, travel)
+func _on_swipe(item, _travel: Vector2) -> void:
+	if not _bed_made:
+		_bed_first(item)
 	elif item.kind == "fold":
 		_open_fold_station(item)
 	else:
@@ -239,8 +423,7 @@ func _cheer() -> void:
 	elif cleaned == int(_total * 0.25):
 		_hud.say("Look, I can see the rug!", 3.0)
 	elif cleaned == int(_total * 0.5):
-		_hud.set_mood("happy")
-		_hud.ned_say("Halfway there! We make a great team!", 3.0, _ned_side_away_from(_last_spot))
+		halfway.emit.call_deferred()
 	elif cleaned == int(_total * 0.75):
 		_hud.say("So much cleaner! Is it here somewhere?", 3.0)
 
@@ -251,10 +434,12 @@ func _tidy(item) -> void:
 	Sfx.play("pop")
 	item.z_index = FLY_Z
 	match item.dest:
-		"bed", "desk":
+		"bed":
+			await _settle(item, 0.7)
+		"desk":
 			var slot: Array = _data.slots[item.id]
 			await _fly(item, Vector2(slot[0], slot[1]), slot[2], deg_to_rad(slot[3]), 0.65)
-			item.z_index = 60 if item.dest == "bed" else 96
+			item.z_index = 96
 			_sparkle_burst(item.position, 5)
 			Sfx.play("plop")
 		"tuck":
@@ -274,31 +459,52 @@ func _tidy(item) -> void:
 			await drop.finished
 			item.visible = false
 			_fill_pencil_cup()
-		"bed_teddy":
-			var teddy: Dictionary = _data.teddy_clean
-			await _fly(item, Vector2(teddy.pos[0], teddy.pos[1]), 1.0, 0.0, 0.7)
-			item.sprite.texture = load(teddy.tex)
-			item.z_index = 60
-			_puff(item.position, 6, 90.0)
-			Sfx.play("plop")
 		_:
 			await _fly(item, _dest_point(item.dest), 0.3, randf_range(-0.6, 0.6), 0.6)
 			_vanish_into(item, item.dest)
 
 
-## Swipe on the duvet: it smooths away and shows the neatly made bed underneath.
-func _make_bed(item, travel: Vector2) -> void:
-	_mark_done(item)
-	Sfx.play("whoosh")
-	var tw := create_tween().set_parallel()
-	var up := Vector2(-travel.normalized().x * 60.0, -item.half_height() * 0.6)
-	tw.tween_property(item, "scale:y", 0.25, 0.5).set_trans(Tween.TRANS_SINE)
-	tw.tween_property(item, "position", item.position + up, 0.5).set_trans(Tween.TRANS_SINE)
-	tw.tween_property(item, "modulate:a", 0.0, 0.5)
-	for i in 6:
-		_sparkle_burst(item.home + Vector2(randf_range(-300, 300), randf_range(-200, 250)), 2)
-	await tw.finished
-	item.visible = false
+## The story takes over the screen for a moment (the room keeps its place).
+func pause_for_story(on: bool) -> void:
+	_modal = on
+	_cancel_gesture()
+	_touches.clear()
+	_idle = 0.0
+	if on:
+		_hud.ned_hide()
+		return
+	_hud.set_mood("happy")
+	await get_tree().create_timer(0.5).timeout
+	_hud.ned_say("Fresh energy! We make a great team. Let's keep going!", 3.5, _ned_side_away_from(_cam.position))
+
+
+## Before the bed is made, everything else waits: point back at the bed.
+func _bed_first(item) -> void:
+	item.drop()
+	item.wiggle()
+	Sfx.play("boop")
+	_hud.say("Bed first! Then everything else.", 2.5)
+	_move_camera(_bed_smooth.position, _cam.zoom.x, 0.6)
+	_rub_hint()
+
+
+## Flies a fluffy (or the folded throw) onto the made bed, where it turns into
+## exactly how it looks in the clean room: sitting up, propped, folded across the foot.
+func _settle(item, duration: float) -> void:
+	var to: Dictionary = _data.settle[item.id]
+	var tex: Texture2D = load(to.tex)
+	var land := float(tex.get_height()) / maxf(1.0, item.half_height() * 2.0 / item.scale.y)
+	await _fly(item, Vector2(to.pos[0], to.pos[1]), clampf(land, 0.3, 1.5), 0.0, duration)
+	item.set_texture(tex)
+	item.scale = Vector2.ONE
+	item.rotation = 0.0
+	item.z_index = int(to.z)
+	var tw := create_tween()
+	tw.tween_property(item, "scale", Vector2(1.08, 0.92), 0.08)
+	tw.tween_property(item, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_puff(item.position, 6, 90.0)
+	_sparkle_burst(item.position, 5)
+	Sfx.play("plop")
 
 
 ## Tap on clothes: open the close-up folding view (swipe left, right, up).
@@ -339,11 +545,7 @@ func _finish_fold(image: Image, screen_pos: Vector2, screen_scale: float, item) 
 	item.z_index = FLY_Z
 	var art := 0.75  # close-up art is full resolution; the room is drawn at 75%
 	if item.dest == "bed_foot":
-		var slot: Array = _data.slots[item.id]
-		await _fly(item, Vector2(slot[0], slot[1]), art * slot[2], deg_to_rad(slot[3]), 0.7)
-		item.z_index = 55
-		_sparkle_burst(item.position, 5)
-		Sfx.play("plop")
+		await _settle(item, 0.7)
 		return
 	_open_drawer()
 	var mouth := _drawer_mouth()
@@ -567,6 +769,17 @@ func _show_hint() -> void:
 	var candidates := _items.filter(func(i): return not i.done)
 	if candidates.is_empty():
 		return
+	if not _bed_made:
+		if not view.grow(-100).has_point(_bed_smooth.position):
+			_move_camera(_bed_smooth.position, _cam.zoom.x, 0.6)
+		_hud.ned_say("Rub the covers with your finger to make the bed!", 3.5, _ned_side_away_from(_bed_smooth.position))
+		Sfx.play("boop", 0.0, -6.0)
+		_rub_hint()
+		return
+	# the fluffies go on the freshly made bed first
+	var fluffies := candidates.filter(func(i): return i.dest == "bed")
+	if not fluffies.is_empty():
+		candidates = fluffies
 	var on_screen := candidates.filter(func(i): return view.has_point(i.position))
 	var pool := on_screen if not on_screen.is_empty() else candidates
 	var item = pool[0]
@@ -592,8 +805,6 @@ func _show_hint() -> void:
 	_sparkle_burst(item.position, 3)
 	Sfx.play("boop", 0.0, -6.0)
 	_hud.ned_say(_ned_tip(item), 3.5, _ned_side_away_from(item.position))
-	if item.dest == "make_bed":
-		_swipe_hint(item)
 
 
 ## Ned's tip for one piece of mess, in his kind, helpful voice.
@@ -601,8 +812,8 @@ func _ned_tip(item) -> String:
 	var id: String = item.id
 	if id == "teddy":
 		return "Mr. Teddy wants to go back on the bed! Tap him."
-	if id in ["flower", "butterfly", "cloud", "bunny"]:
-		return "That cuddly one goes on the bed. Tap it!"
+	if id == "flower":
+		return "The flower pillow goes on the bed, next to Mr. Teddy!"
 	if id.begins_with("doll_"):
 		return "Those little doll things go in the dollhouse!"
 	if id in ["coloring_book", "notebook"]:
@@ -613,14 +824,17 @@ func _ned_tip(item) -> String:
 		return "A wrapper! Tap it for the trash."
 	if id == "dresser_sock":
 		return "A sock is poking out of the drawer! Tap it."
-	if id == "duvet":
-		return "Swipe the blanket to make the bed!"
+	if id == "cup":
+		return "Uh oh, a tipped-over cup! Tap it for the trash."
+	if id == "tissue":
+		return "A used tissue! That goes in the trash."
 	if id == "throw_blanket":
 		return "Let's fold that blanket. Tap it!"
 	if item.kind == "fold":
 		return "Clothes! Tap them and we'll fold them together."
 	var names := {"cat": "kitty", "ball": "ball", "boat": "boat", "teacup_a": "teacup",
-		"teacup_b": "teacup", "block_a": "block", "block_b": "block"}
+		"teacup_b": "teacup", "block_a": "block", "block_b": "block", "butterfly": "butterfly",
+		"cloud": "cloud", "bunny": "bear"}
 	return "Tap the %s to put it in the toy box!" % names.get(id, "toy")
 
 
@@ -633,20 +847,6 @@ func _ned_side_away_from(world_pos: Vector2) -> String:
 func _ned_cheer_ring() -> void:
 	await get_tree().create_timer(0.9).timeout
 	_hud.ned_say("You found it, Lola! I knew we would!", 0.0, _ned_side_away_from(_ring.position))
-
-
-func _swipe_hint(item) -> void:
-	var s := Sprite2D.new()
-	s.texture = TEX_SPARKLE
-	s.z_index = FLY_Z + 10
-	s.scale = Vector2(0.9, 0.9)
-	_items_root.add_child(s)
-	var w := maxf(item.half_height(), 70.0)
-	var tw := create_tween()
-	for i in 2:
-		tw.tween_callback(func(): s.position = item.position + Vector2(-w, 0))
-		tw.tween_property(s, "position", item.position + Vector2(w, 0), 0.45).set_trans(Tween.TRANS_SINE)
-	tw.tween_callback(s.queue_free)
 
 
 func _sparkle_burst(at: Vector2, count: int) -> void:

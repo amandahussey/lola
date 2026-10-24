@@ -1,0 +1,171 @@
+extends RefCounted
+## The story, chapter by chapter, in the book's own words.
+## Beats (played in order by story_player.gd):
+##   {chapter = "title"}                       big chapter title card
+##   {page = 7, hidden = [...], idle = {...}}  turn to a book page (parts in `hidden` wait for "show");
+##   {page = [3, 4], ...}                      two facing pages that make one scene, shown as a spread
+##   {text = "...", voice = "id"}              a line of the story; tap to go on
+##   {say = "...", who = "lola"/"ned"/"grandpa", voice = "id"}   a character speaks
+##   {show = "part", anim = "pop"/"drop"/"left"/"right"/"up"/"fade"}
+##   {hide = "part"}, {act = "part", do = "hop"/"wiggle"/"shake"/"spin"/"tip"/"move"/"sparkle"}
+##   {tap = "part", prompt = "..."}            wait for the player to tap something in the picture
+##   {rub = "mirror", tool = "rag", reveal = "reflection"}   rub a fogged-up part clean
+##   {hop = ["lola"], steps = [[dx, dy], ...]}  each tap hops them one step
+##   {spots = [{at = [x, y], r = 100, say = "...", who = "lola"} / {part = "ned", ...}]}
+##                                             search places in the picture, each with a line
+##   {screen = "shake"/"flash"}, {sfx = "pop"}, {wait = 0.5}
+## `voice` names a recording in assets/narration/ (see SCRIPT.md there); it's optional.
+
+const CHAPTERS := [
+	{"id": "ch1", "title": "Lola Loves Purple"},
+	{"id": "ch2", "title": "Something Sparkly"},
+	{"id": "ch3", "title": "Dinner with Grandpa"},
+	{"id": "ch4", "title": "The Ring Is Lost!"},
+	{"id": "ch5", "title": "Clean-Up Time"},
+	{"id": "ch6", "title": "Found!"},
+]
+
+const STORY := {
+	"ch1": [
+		{"chapter": "Chapter 1\nLola Loves Purple"},
+		{"page": 2, "idle": {"lola": "breathe", "hearts": "bob"}},
+		{"text": "Lola loves purple.\nIt's her favorite color.\nNot red, not blue, not orange or yellow.\nJust purple, and nothing other.", "voice": "p02_a"},
+		{"page": [3, 4]},
+		{"text": "So from Mr. Teddy Bear with his ear that was torn\nto her walls and clothes and dresser drawers…", "voice": "p03_a"},
+		{"text": "All was purple with hints of pink.\nEven more purple than you'd ever think!", "voice": "p04_a"},
+		{"page": [5, 6], "idle": {"notebook": "bob", "butterfly": "bob", "ball": "bob"}},
+		{"text": "She had too many clothes\nand more toys than you'd guess.", "voice": "p05_a"},
+		{"text": "Like a purple tornado, her room was a mess!", "voice": "p06_a"},
+	],
+	"ch2": [
+		{"chapter": "Chapter 2\nSomething Sparkly"},
+		{"page": [7, 8], "hidden": ["reflection"], "idle": {"ned": "breathe", "lights": "twinkle"}},
+		{"text": "But always there was her best friend Ned,\nto help fold and clean and make her bed.", "voice": "p07_a"},
+		{"text": "One day he came over to help Lola clean.", "voice": "p08_a"},
+		{"rub": "mirror", "tool": "rag", "reveal": "reflection", "prompt": "Help Ned clean the mirror! Rub it with your finger."},
+		{"text": "While cleaning the mirror, he suddenly screamed!", "voice": "p08_b"},
+		{"page": [9, 10], "hidden": ["duck", "where"], "idle": {"lola": "breathe"}},
+		{"act": "ned", "do": "shake"},
+		{"show": "duck", "anim": "pop"},
+		{"screen": "shake"},
+		{"say": "DUCK!", "who": "ned", "voice": "p09_a", "size": 96},
+		{"tap": "lola", "prompt": "Quick! Tap Lola to help her duck!"},
+		{"act": "lola", "do": "duck", "wait": 0.5},
+		{"show": "where", "anim": "pop"},
+		{"say": "Where?", "who": "lola_worried", "voice": "p10_a", "part": "lola", "size": 80},
+		{"page": [11, 12], "hidden": ["b", "o", "n", "k", "bang"]},
+		{"show": "b", "anim": "drop", "wait": 0.25},
+		{"show": "o", "anim": "drop", "wait": 0.3},
+		{"show": "n", "anim": "drop", "wait": 0.2},
+		{"show": "k", "anim": "drop", "wait": 0.2},
+		{"show": "bang", "anim": "drop", "wait": 0.3},
+		{"sfx": "plop"},
+		{"screen": "flash"},
+		{"screen": "shake"},
+		{"wait": 0.6},
+		{"page": [13, 14], "hidden": ["ned", "bucket", "diamond", "14.lola", "drops", "ring"], "idle": {"dizzy": "spin"}},
+		{"text": "Something suddenly hit Lola's head.", "voice": "p13_a"},
+		{"show": "ned", "anim": "left", "wait": 0.0},
+		{"show": "bucket", "anim": "left", "wait": 0.6},
+		{"say": "Oh no! Oh please don't be dead!", "who": "ned", "voice": "p13_b"},
+		{"text": "So he ran to the sink to go get some water.", "voice": "p13_c"},
+		{"tap": "bucket", "prompt": "Quick! Tap the bucket to splash Lola!"},
+		{"act": "bucket", "do": "tip", "angle": -0.7, "wait": 0.2},
+		{"sfx": "whoosh"},
+		{"screen": "flash"},
+		{"hide": "dizzy"},
+		{"text": "Then he ran back to Lola and dumped it all on her!", "voice": "p13_d"},
+		{"text": "And in a second, Lola turned to see,\nto her left, a rare purple diamond,\nas big as could be!", "voice": "p13_e"},
+		{"tap": "diamond", "prompt": "Something is sparkling! Tap it!"},
+		{"show": "14.lola", "anim": "up", "wait": 0.3},
+		{"show": "drops", "anim": "fade", "wait": 0.0},
+		{"show": "ring", "anim": "pop", "wait": 0.3},
+		{"act": "ring", "do": "sparkle"},
+		{"say": "Oh look! Look, Ned!\nThis is the thing that must've hit my head!", "who": "lola_joy", "voice": "p14_a", "part": "14.lola"},
+		{"text": "It was the most beautiful thing she'd ever seen.\nSo sparkly and purple, what a rare diamond ring!", "voice": "p14_b"},
+	],
+	"ch3": [
+		{"chapter": "Chapter 3\nDinner with Grandpa"},
+		{"page": 15, "hidden": ["lola", "ned"]},
+		{"act": "lola", "do": "move", "by": [-152, -125], "time": 0.01},
+		{"text": "Before they had time to study it there,\nher grandfather's voice rumbled up through the stairs.", "voice": "p15_a"},
+		{"screen": "shake"},
+		{"say": "Diiinnnerrr!", "who": "grandpa", "voice": "p15_b", "size": 96},
+		{"text": "His voice echoed down through the hall.", "voice": "p15_c"},
+		{"show": "ned", "anim": "right", "wait": 0.3},
+		{"show": "lola", "anim": "pop", "wait": 0.4},
+		{"hop": ["lola"], "steps": [[76, 63], [76, 63], [76, 63], [76, 63], [76, 63], [40, 70]], "prompt": "Tap to hop Lola down the stairs!"},
+		{"act": "ned", "do": "hop"},
+		{"text": "So downstairs they went, in awe of it all.", "voice": "p15_d"},
+		{"page": 16, "idle": {"grandpa": "breathe", "lola": "sway", "ned": "sway"}},
+		{"text": "At the table, Grandpa listened with care\nto their story of the ring,\nand how it appeared from thin air.", "voice": "p16_a"},
+		{"text": "After making sure that Lola's head was okay,\nhe shared stories of his own in his fun Grandpa way.", "voice": "p16_b"},
+		{"say": "Please pass the bread!", "who": "grandpa", "voice": "p16_c"},
+		{"tap": "bread", "prompt": "Tap the bread to pass it to Grandpa!"},
+		{"act": "bread", "do": "move", "by": [15, -75], "time": 0.5, "wait": 0.6},
+		{"act": "grandpa", "do": "hop"},
+		{"tap": "grandpa", "prompt": "Tap Grandpa to hear one of his stories!"},
+		{"say": "Did I ever tell you about the time I lost my glasses? I looked everywhere... and they were on my head the whole time!", "who": "grandpa", "voice": "p16_d", "size": 46},
+	],
+	"ch4": [
+		{"chapter": "Chapter 4\nThe Ring Is Lost!"},
+		{"page": [17, 18], "idle": {"lola": "breathe", "ned": "breathe"}},
+		{"text": "After stories and laughter and dishes all done,\nthey ran up the stairs to her room one by one.", "voice": "p17_a"},
+		{"text": "They could finally study the ring in her room,\nbut neither could see it, and worry then grew.", "voice": "p17_b"},
+		{"say": "The diamond!", "who": "lola_worried", "voice": "p18_a", "part": "lola", "size": 80},
+		{"text": "Lola shrieked as she saw it was lost.", "voice": "p18_b"},
+		{"say": "We must look and look until we find where it's tossed!", "who": "ned", "voice": "p18_c"},
+		{"page": [19, 20], "idle": {"lola": "breathe", "ned": "breathe"}},
+		{"spots": [
+			{"at": [1700, 740], "r": 110, "say": "Just paper and pencils in my desk...", "who": "lola_worried", "voice": "p19_d"},
+			{"at": [430, 770], "r": 130, "say": "It's not under the covers!", "who": "lola_worried", "voice": "p19_e"},
+			{"at": [470, 1040], "r": 100, "say": "Only dust bunnies under the bed!", "who": "lola_worried", "voice": "p19_f"},
+			{"part": "ned", "say": "Hey, that tickles! It's not in my pockets!", "who": "ned", "voice": "p19_g"}
+		], "prompt": "Help Lola search! Tap her desk, the covers, under the bed... and Ned!"},
+		{"text": "She looked through her desk and under her bed.\nShe looked under the covers,\nand she even searched Ned!", "voice": "p19_a"},
+		{"text": "But the diamond ring was nowhere to be found…", "voice": "p19_b"},
+		{"say": "We could find it if I could actually see the ground…", "who": "lola_worried", "voice": "p19_c"},
+	],
+	"ch5": [
+		{"chapter": "Chapter 5\nClean-Up Time"},
+		{"page": [21, 22]},
+		{"text": "So they began to clean and fold and organize\nher desk and drawers and clothes and toys.", "voice": "p21_a"},
+	],
+	# halfway through cleaning the room
+	"ch5_sad": [
+		{"page": [23, 24], "idle": {"sigh": "bob", "lola": "breathe", "ned": "breathe"}},
+		{"text": "But all they found under the mess,\nwas more to clean and more to dust,\nand more to search and more to clear,\nbut the ring, sadly, was nowhere near.", "voice": "p23_a"},
+		{"text": "Lola's face fell as she said to Ned,", "voice": "p24_a"},
+		{"say": "I still need your help…\nIt was the most beautiful thing, that big diamond ring,\nand there's no one to blame but myself.", "who": "lola_worried", "voice": "p24_b", "part": "24.lola", "size": 46},
+		{"text": "Of course Ned said with his kind-hearted smile\nthat he'd help her find the ring.\nHe'd help go through her things\n'till they'd searched everything.\n(For her, he'd even search miles.)", "voice": "p24_c", "size": 44},
+		{"act": "ned", "do": "hop"},
+		{"page": [25, 26]},
+		{"text": "With a fresh sense of energy,\nthey continued searching high and low,\nworking together as they searched,\ncleaning as they'd go.", "voice": "p25_a"},
+	],
+	"ch6": [
+		{"chapter": "Chapter 6\nFound!"},
+		{"page": [27, 28], "hidden": ["shimmer"], "idle": {"lola": "breathe"}},
+		{"text": "Then as she folded the very last thing,\nshe suddenly saw something shimmering.", "voice": "p27_a"},
+		{"show": "shimmer", "anim": "pop", "wait": 0.2},
+		{"act": "shimmer", "do": "sparkle", "wait": 0.6},
+		{"text": "A smile lit her face as she finally found…", "voice": "p28_a"},
+		{"page": [29, 30], "hidden": ["diamond", "shine"], "idle": {"shine": "twinkle", "sparkles": "twinkle"}},
+		{"show": "diamond", "anim": "up", "wait": 0.4},
+		{"show": "shine", "anim": "pop"},
+		{"text": "The rare purple diamond right there on the ground.", "voice": "p29_a"},
+		{"say": "My ring!", "who": "lola_joy", "voice": "p30_a", "size": 80},
+		{"page": [31, 32], "hidden": ["almost"]},
+		{"text": "The End…", "voice": "p32_a", "size": 72},
+		{"show": "almost", "anim": "pop"},
+		{"text": "(almost?)", "voice": "p32_b", "size": 72},
+		{"page": [33, 34], "idle": {"lola": "breathe", "ned": "breathe"}},
+		{"text": "Lola & Ned's Clean-up Game!\nIs your room messy, like Lola's was?\nDon't worry! You can tidy up and have fun, too!", "voice": "p33_a"},
+		{"text": "Step 1: Find a thing like the ring!\nPick a small treasure, like a button, coin, key, or toy.", "voice": "p33_b"},
+		{"text": "Step 2: Hide the prize!\nAsk someone to hide it somewhere in your room.", "voice": "p33_c"},
+		{"text": "Step 3: Clean to find what's left behind!\nTidy up as you search. Make it fun, not work!", "voice": "p33_d"},
+		{"text": "You don't have to do it all.\nJust make some progress, big or small!\n\nIf you're having fun, play again!\nAnd until next time…", "voice": "p34_a"},
+		{"page": [35, 36], "idle": {"ned": "wave", "lola": "breathe"}},
+		{"text": "This is (the real)", "voice": "p35_a", "size": 72},
+		{"text": "The End.", "voice": "p36_a", "size": 80},
+	],
+}

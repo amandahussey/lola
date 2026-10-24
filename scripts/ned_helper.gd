@@ -2,12 +2,13 @@ extends Control
 ## Ned, Lola's best friend, popping up from the bottom of the screen to help.
 ## Add it full-screen (it never blocks touches) and call say().
 
-const TEX_NED := preload("res://assets/ui/ned_full.png")
 const INK := Color(0.149, 0.102, 0.18)
 
+## Ned waving (from the book's last page), cut off at the bottom so he rises from the screen edge.
+@export var texture: Texture2D = preload("res://assets/ui/ned_wave.png")
 ## How tall Ned is drawn, and how much of him peeks above the bottom edge.
-@export var ned_height := 860.0
-@export var peek := 520.0
+@export var ned_height := 600.0
+@export var peek := 600.0
 @export var bubble_width := 440.0
 ## Put the bubble above Ned's head instead of beside it.
 @export var bubble_above := false
@@ -23,11 +24,11 @@ var _tween: Tween
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_ned.texture = TEX_NED
+	_ned.texture = texture
 	_ned.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_ned.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 	_ned.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var w := ned_height * TEX_NED.get_width() / TEX_NED.get_height()
+	var w := ned_height * texture.get_width() / texture.get_height()
 	_ned.size = Vector2(w, ned_height)
 	_ned.pivot_offset = Vector2(w / 2, ned_height)
 	add_child(_ned)

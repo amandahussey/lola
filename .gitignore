@@ -9,3 +9,4 @@ tools/art_pipeline/*.npy
 tools/art_pipeline/*.pkl
 .DS_Store
 __pycache__/
+tools/art_pipeline/book/

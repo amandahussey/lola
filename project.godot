@@ -19,6 +19,7 @@ config/icon="res://assets/ui/lola_happy.png"
 [autoload]
 
 Sfx="*res://scripts/sfx.gd"
+Narration="*res://scripts/narration.gd"
 
 [display]
 

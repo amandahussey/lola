@@ -1,0 +1,1161 @@
+{
+ "2": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   0.4691,
+   0.3471,
+   0.5968
+  ],
+  "chunks": [
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/2/lola.png",
+    "pos": [
+     650.0,
+     513.7
+    ]
+   },
+   {
+    "part": "hearts",
+    "tex": "res://assets/story/pages/2/hearts.png",
+    "pos": [
+     566.3,
+     906.6
+    ]
+   }
+  ]
+ },
+ "3": {
+  "size": [
+   1029,
+   1300
+  ],
+  "bg": [
+   0.4745,
+   0.3294,
+   0.5255
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/3/base0.png",
+    "pos": [
+     514.3,
+     649.8
+    ]
+   }
+  ]
+ },
+ "4": {
+  "size": [
+   1032,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/4/base0.png",
+    "pos": [
+     515.8,
+     650.0
+    ]
+   }
+  ]
+ },
+ "5": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.6404,
+   0.516,
+   0.7166
+  ],
+  "chunks": [
+   {
+    "part": "tornado",
+    "tex": "res://assets/story/pages/5/tornado.png",
+    "pos": [
+     535.5,
+     849.4
+    ]
+   }
+  ]
+ },
+ "6": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.6404,
+   0.516,
+   0.7166
+  ],
+  "chunks": [
+   {
+    "part": "tornado",
+    "tex": "res://assets/story/pages/6/tornado.png",
+    "pos": [
+     498.1,
+     492.3
+    ]
+   },
+   {
+    "part": "notebook",
+    "tex": "res://assets/story/pages/6/notebook.png",
+    "pos": [
+     673.8,
+     452.6
+    ]
+   },
+   {
+    "part": "butterfly",
+    "tex": "res://assets/story/pages/6/butterfly.png",
+    "pos": [
+     825.2,
+     119.7
+    ]
+   },
+   {
+    "part": "ball",
+    "tex": "res://assets/story/pages/6/ball.png",
+    "pos": [
+     815.4,
+     1034.6
+    ]
+   }
+  ]
+ },
+ "7": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.8214,
+   0.7941,
+   0.8325
+  ],
+  "chunks": [
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/7/ned.png",
+    "pos": [
+     277.6,
+     616.9
+    ]
+   }
+  ]
+ },
+ "8": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.8214,
+   0.7941,
+   0.8325
+  ],
+  "chunks": [
+   {
+    "part": "mirror",
+    "tex": "res://assets/story/pages/8/mirror.png",
+    "pos": [
+     573.7,
+     482.1
+    ]
+   },
+   {
+    "part": "reflection",
+    "tex": "res://assets/story/pages/8/reflection.png",
+    "pos": [
+     551.4,
+     607.0
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/8/ned.png",
+    "pos": [
+     353.5,
+     616.5
+    ]
+   },
+   {
+    "part": "rag",
+    "tex": "res://assets/story/pages/8/rag.png",
+    "pos": [
+     451.8,
+     639.7
+    ]
+   },
+   {
+    "part": "lights",
+    "tex": "res://assets/story/pages/8/lights.png",
+    "pos": [
+     562.3,
+     339.6
+    ]
+   }
+  ]
+ },
+ "9": {
+  "size": [
+   1029,
+   1300
+  ],
+  "bg": [
+   0.6404,
+   0.516,
+   0.7166
+  ],
+  "chunks": [
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/9/ned.png",
+    "pos": [
+     257.9,
+     867.7
+    ]
+   },
+   {
+    "part": "duck",
+    "tex": "res://assets/story/pages/9/duck.png",
+    "pos": [
+     517.5,
+     437.2
+    ]
+   }
+  ]
+ },
+ "10": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   0.6404,
+   0.516,
+   0.7166
+  ],
+  "chunks": [
+   {
+    "part": "where",
+    "tex": "res://assets/story/pages/10/where.png",
+    "pos": [
+     493.7,
+     274.3
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/10/lola.png",
+    "pos": [
+     555.5,
+     858.5
+    ]
+   }
+  ]
+ },
+ "11": {
+  "size": [
+   1032,
+   1300
+  ],
+  "bg": [
+   0.3255,
+   0.251,
+   0.3686
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/11/base0.png",
+    "pos": [
+     516.2,
+     650.0
+    ]
+   },
+   {
+    "part": "b",
+    "tex": "res://assets/story/pages/11/b.png",
+    "pos": [
+     291.9,
+     781.1
+    ]
+   },
+   {
+    "part": "o",
+    "tex": "res://assets/story/pages/11/o.png",
+    "pos": [
+     669.8,
+     762.4
+    ]
+   }
+  ]
+ },
+ "12": {
+  "size": [
+   1029,
+   1300
+  ],
+  "bg": [
+   0.3255,
+   0.251,
+   0.3686
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/12/base0.png",
+    "pos": [
+     514.3,
+     650.0
+    ]
+   },
+   {
+    "part": "bang",
+    "tex": "res://assets/story/pages/12/bang.png",
+    "pos": [
+     879.1,
+     709.3
+    ]
+   },
+   {
+    "part": "k",
+    "tex": "res://assets/story/pages/12/k.png",
+    "pos": [
+     667.9,
+     741.6
+    ]
+   },
+   {
+    "part": "n",
+    "tex": "res://assets/story/pages/12/n.png",
+    "pos": [
+     333.7,
+     735.9
+    ]
+   }
+  ]
+ },
+ "13": {
+  "size": [
+   1029,
+   1300
+  ],
+  "bg": [
+   0.8916,
+   0.816,
+   0.9238
+  ],
+  "chunks": [
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/13/ned.png",
+    "pos": [
+     233.4,
+     600.9
+    ]
+   },
+   {
+    "part": "bucket",
+    "tex": "res://assets/story/pages/13/bucket.png",
+    "pos": [
+     362.3,
+     668.7
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/13/lola.png",
+    "pos": [
+     503.2,
+     790.6
+    ]
+   },
+   {
+    "part": "dizzy",
+    "tex": "res://assets/story/pages/13/dizzy.png",
+    "pos": [
+     690.9,
+     982.9
+    ]
+   },
+   {
+    "part": "diamond",
+    "tex": "res://assets/story/pages/13/diamond.png",
+    "pos": [
+     705.5,
+     974.7
+    ]
+   }
+  ]
+ },
+ "14": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   0.8916,
+   0.816,
+   0.9238
+  ],
+  "chunks": [
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/14/lola.png",
+    "pos": [
+     306.8,
+     716.1
+    ]
+   },
+   {
+    "part": "drops",
+    "tex": "res://assets/story/pages/14/drops.png",
+    "pos": [
+     328.2,
+     872.1
+    ]
+   },
+   {
+    "part": "ring",
+    "tex": "res://assets/story/pages/14/ring.png",
+    "pos": [
+     512.4,
+     694.7
+    ]
+   }
+  ]
+ },
+ "15": {
+  "size": [
+   1028,
+   1300
+  ],
+  "bg": [
+   0.8561,
+   0.798,
+   0.7738
+  ],
+  "chunks": [
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/15/lola.png",
+    "pos": [
+     359.1,
+     572.6
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/15/base1.png",
+    "pos": [
+     476.6,
+     696.5
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/15/ned.png",
+    "pos": [
+     783.2,
+     926.6
+    ]
+   }
+  ]
+ },
+ "16": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.8561,
+   0.798,
+   0.7738
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/16/base0.png",
+    "pos": [
+     513.0,
+     650.0
+    ]
+   },
+   {
+    "part": "grandpa",
+    "tex": "res://assets/story/pages/16/grandpa.png",
+    "pos": [
+     527.1,
+     661.9
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/16/base1.png",
+    "pos": [
+     637.2,
+     919.4
+    ]
+   },
+   {
+    "part": "bread",
+    "tex": "res://assets/story/pages/16/bread.png",
+    "pos": [
+     508.1,
+     880.8
+    ]
+   },
+   {
+    "part": "base2",
+    "tex": "res://assets/story/pages/16/base2.png",
+    "pos": [
+     540.3,
+     862.8
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/16/ned.png",
+    "pos": [
+     749.4,
+     886.4
+    ]
+   },
+   {
+    "part": "base3",
+    "tex": "res://assets/story/pages/16/base3.png",
+    "pos": [
+     250.2,
+     924.1
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/16/lola.png",
+    "pos": [
+     337.7,
+     798.2
+    ]
+   },
+   {
+    "part": "base4",
+    "tex": "res://assets/story/pages/16/base4.png",
+    "pos": [
+     537.1,
+     1042.9
+    ]
+   }
+  ]
+ },
+ "17": {
+  "size": [
+   1029,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/17/base0.png",
+    "pos": [
+     514.3,
+     649.8
+    ]
+   }
+  ]
+ },
+ "18": {
+  "size": [
+   1027,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/18/base0.png",
+    "pos": [
+     513.7,
+     649.8
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/18/lola.png",
+    "pos": [
+     253.7,
+     863.7
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/18/ned.png",
+    "pos": [
+     850.0,
+     1032.0
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/18/base1.png",
+    "pos": [
+     1009.3,
+     448.6
+    ]
+   }
+  ]
+ },
+ "19": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/19/base0.png",
+    "pos": [
+     515.6,
+     650.0
+    ]
+   }
+  ]
+ },
+ "20": {
+  "size": [
+   1027,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/20/base0.png",
+    "pos": [
+     513.7,
+     649.8
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/20/lola.png",
+    "pos": [
+     491.5,
+     768.8
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/20/ned.png",
+    "pos": [
+     596.3,
+     909.4
+    ]
+   },
+   {
+    "part": "base2",
+    "tex": "res://assets/story/pages/20/base2.png",
+    "pos": [
+     1011.5,
+     448.1
+    ]
+   }
+  ]
+ },
+ "21": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/21/base0.png",
+    "pos": [
+     515.6,
+     650.0
+    ]
+   }
+  ]
+ },
+ "22": {
+  "size": [
+   1032,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/22/base0.png",
+    "pos": [
+     516.2,
+     650.0
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/22/ned.png",
+    "pos": [
+     650.0,
+     911.9
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/22/base1.png",
+    "pos": [
+     1008.1,
+     459.8
+    ]
+   }
+  ]
+ },
+ "23": {
+  "size": [
+   1028,
+   1300
+  ],
+  "bg": [
+   0.6597,
+   0.6984,
+   0.7865
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/23/base0.png",
+    "pos": [
+     513.8,
+     650.0
+    ]
+   },
+   {
+    "part": "sigh",
+    "tex": "res://assets/story/pages/23/sigh.png",
+    "pos": [
+     266.5,
+     1018.4
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/23/lola.png",
+    "pos": [
+     726.1,
+     756.7
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/23/base1.png",
+    "pos": [
+     510.2,
+     295.4
+    ]
+   }
+  ]
+ },
+ "24": {
+  "size": [
+   1028,
+   1300
+  ],
+  "bg": [
+   0.6597,
+   0.6984,
+   0.7865
+  ],
+  "chunks": [
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/24/ned.png",
+    "pos": [
+     436.3,
+     677.3
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/24/lola.png",
+    "pos": [
+     621.8,
+     657.8
+    ]
+   }
+  ]
+ },
+ "25": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/25/base0.png",
+    "pos": [
+     515.6,
+     650.0
+    ]
+   }
+  ]
+ },
+ "26": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   1.0,
+   0.9989,
+   0.9966
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/26/base0.png",
+    "pos": [
+     515.6,
+     650.0
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/26/ned.png",
+    "pos": [
+     627.6,
+     904.3
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/26/base1.png",
+    "pos": [
+     445.8,
+     559.1
+    ]
+   }
+  ]
+ },
+ "27": {
+  "size": [
+   1029,
+   1300
+  ],
+  "bg": [
+   0.7804,
+   0.7098,
+   0.8784
+  ],
+  "chunks": [
+   {
+    "part": "shimmer",
+    "tex": "res://assets/story/pages/27/shimmer.png",
+    "pos": [
+     526.5,
+     871.8
+    ]
+   }
+  ]
+ },
+ "28": {
+  "size": [
+   1028,
+   1300
+  ],
+  "bg": [
+   0.7804,
+   0.7098,
+   0.8784
+  ],
+  "chunks": [
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/28/lola.png",
+    "pos": [
+     535.7,
+     835.2
+    ]
+   }
+  ]
+ },
+ "29": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.8691,
+   0.8098,
+   0.5981
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/29/base0.png",
+    "pos": [
+     514.9,
+     650.0
+    ]
+   },
+   {
+    "part": "diamond",
+    "tex": "res://assets/story/pages/29/diamond.png",
+    "pos": [
+     485.0,
+     1022.9
+    ]
+   },
+   {
+    "part": "shine",
+    "tex": "res://assets/story/pages/29/shine.png",
+    "pos": [
+     463.4,
+     742.1
+    ]
+   }
+  ]
+ },
+ "30": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.8691,
+   0.8098,
+   0.5981
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/30/base0.png",
+    "pos": [
+     514.9,
+     650.0
+    ]
+   },
+   {
+    "part": "sparkles",
+    "tex": "res://assets/story/pages/30/sparkles.png",
+    "pos": [
+     491.5,
+     530.0
+    ]
+   },
+   {
+    "part": "base1",
+    "tex": "res://assets/story/pages/30/base1.png",
+    "pos": [
+     595.9,
+     709.5
+    ]
+   }
+  ]
+ },
+ "31": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   0.7804,
+   0.7098,
+   0.8784
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/31/base0.png",
+    "pos": [
+     434.9,
+     446.4
+    ]
+   }
+  ]
+ },
+ "32": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.7804,
+   0.7098,
+   0.8784
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/32/base0.png",
+    "pos": [
+     566.9,
+     670.1
+    ]
+   },
+   {
+    "part": "almost",
+    "tex": "res://assets/story/pages/32/almost.png",
+    "pos": [
+     798.1,
+     1118.3
+    ]
+   }
+  ]
+ },
+ "33": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.8916,
+   0.816,
+   0.9238
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/33/base0.png",
+    "pos": [
+     514.9,
+     650.0
+    ]
+   }
+  ]
+ },
+ "34": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   0.8916,
+   0.816,
+   0.9238
+  ],
+  "chunks": [
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/34/lola.png",
+    "pos": [
+     443.9,
+     776.5
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/34/ned.png",
+    "pos": [
+     703.0,
+     788.1
+    ]
+   }
+  ]
+ },
+ "35": {
+  "size": [
+   1031,
+   1300
+  ],
+  "bg": [
+   0.7804,
+   0.7098,
+   0.8784
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/35/base0.png",
+    "pos": [
+     453.3,
+     607.2
+    ]
+   }
+  ]
+ },
+ "36": {
+  "size": [
+   1030,
+   1300
+  ],
+  "bg": [
+   0.7804,
+   0.7098,
+   0.8784
+  ],
+  "chunks": [
+   {
+    "part": "base0",
+    "tex": "res://assets/story/pages/36/base0.png",
+    "pos": [
+     580.9,
+     580.7
+    ]
+   },
+   {
+    "part": "lola",
+    "tex": "res://assets/story/pages/36/lola.png",
+    "pos": [
+     750.7,
+     1075.4
+    ]
+   },
+   {
+    "part": "ned",
+    "tex": "res://assets/story/pages/36/ned.png",
+    "pos": [
+     388.6,
+     1085.2
+    ]
+   }
+  ]
+ }
+}

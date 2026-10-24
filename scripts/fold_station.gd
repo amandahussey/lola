@@ -56,6 +56,7 @@ func _ready() -> void:
 	_arrow.texture = TEX_ARROW
 	_arrow.modulate.a = 0.0
 	add_child(_arrow)
+	_ned.texture = preload("res://assets/ui/ned_full.png")  # Ned holding folded clothes
 	_ned.ned_height = 680.0
 	_ned.peek = 560.0
 	_ned.bubble_width = 300.0

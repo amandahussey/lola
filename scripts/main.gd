@@ -1,9 +1,26 @@
 extends Node
-## Game flow: title -> story intro -> messy room -> ring found -> ending cards -> title.
+## Game flow: the title, then the book chapter by chapter. Story pages lead into small games
+## (the purple tornado, cleaning Lola's room...), and the room's halfway point pauses for the
+## book's sad moment and Ned's pep talk. Reaching a chapter unlocks it on the title screen.
 
 const TitleScene := preload("res://scenes/title.tscn")
-const StoryCardScene := preload("res://scenes/story_card.tscn")
 const RoomScene := preload("res://scenes/room.tscn")
+const StoryPlayer := preload("res://scripts/story/story_player.gd")
+const StoryScript := preload("res://scripts/story/story_script.gd")
+const Tornado := preload("res://scripts/games/tornado.gd")
+const SAVE := "user://progress.cfg"
+
+## What happens, in order. "chapter" marks where each chapter starts (1-based).
+const FLOW := [
+	{"story": "ch1", "chapter": 1},
+	{"game": "tornado"},
+	{"story": "ch2", "chapter": 2},
+	{"story": "ch3", "chapter": 3},
+	{"story": "ch4", "chapter": 4},
+	{"story": "ch5", "chapter": 5},
+	{"game": "room"},
+	{"story": "ch6", "chapter": 6},
+]
 
 @onready var _world: Node = $World
 @onready var _screens: CanvasLayer = $Screens
@@ -11,6 +28,8 @@ const RoomScene := preload("res://scenes/room.tscn")
 
 var _current: Node
 var _switching := false
+var _step := -1
+var _overlay: CanvasLayer
 
 
 func _ready() -> void:
@@ -24,53 +43,89 @@ func show_title() -> void:
 	_show(_make_title())
 
 
-func show_intro() -> void:
-	var card := StoryCardScene.instantiate()
-	card.setup(
-		preload("res://assets/story/intro_spread.jpg"),
-		"Oh no! Lola's rare purple diamond ring is lost somewhere in her messy room.",
-		"Let's find it!")
-	card.finished.connect(show_game)
-	_show(card)
+## Starts the book at chapter n (1-based).
+func play_chapter(n: int) -> void:
+	for i in FLOW.size():
+		if FLOW[i].get("chapter", 0) == n:
+			_step = i - 1
+			_next()
+			return
 
 
-func show_game() -> void:
-	var room := RoomScene.instantiate()
-	room.ring_found.connect(show_ring_card)
-	_show(room)
+func _next() -> void:
+	_step += 1
+	if _step >= FLOW.size():
+		show_title()
+		return
+	var f: Dictionary = FLOW[_step]
+	if f.has("chapter"):
+		_unlock(f.chapter)
+	if f.has("story"):
+		_show(_make_story(f.story, _next))
+	elif f.game == "tornado":
+		var t := Tornado.new()
+		t.finished.connect(_next)
+		_show(t)
+	elif f.game == "room":
+		var room := RoomScene.instantiate()
+		room.ring_found.connect(_next)
+		room.halfway.connect(_halfway.bind(room))
+		_show(room)
 
 
-func show_ring_card() -> void:
-	var card := StoryCardScene.instantiate()
-	card.setup(
-		preload("res://assets/story/ring_spread.jpg"),
-		"You found Lola's ring!",
-		"Yay!")
-	card.finished.connect(show_finale)
-	_show(card)
+func _make_story(id: String, then: Callable) -> Node:
+	var player := StoryPlayer.new()
+	player.setup(StoryScript.STORY[id])
+	player.finished.connect(then, CONNECT_ONE_SHOT)
+	return player
 
 
-func show_finale() -> void:
-	var card := StoryCardScene.instantiate()
-	card.setup(
-		preload("res://assets/story/high_five.jpg"),
-		"You did it! Lola's room is tidy and her ring is found.\nThanks for helping!",
-		"Play again")
-	card.finished.connect(show_title)
-	_show(card)
+## Halfway through cleaning: the book's sad page and Ned's kind words, then back to work.
+func _halfway(room) -> void:
+	room.pause_for_story(true)
+	_overlay = CanvasLayer.new()
+	_overlay.layer = 50
+	add_child(_overlay)
+	var player := _make_story("ch5_sad", _end_halfway.bind(room))
+	player.modulate.a = 0.0
+	_overlay.add_child(player)
+	create_tween().tween_property(player, "modulate:a", 1.0, 0.4)
+
+
+func _end_halfway(room) -> void:
+	var tw := create_tween()
+	tw.tween_property(_overlay.get_child(0), "modulate:a", 0.0, 0.4)
+	await tw.finished
+	_overlay.queue_free()
+	room.pause_for_story(false)
 
 
 func _make_title() -> Node:
 	var title := TitleScene.instantiate()
-	title.play_pressed.connect(show_intro)
+	title.setup(StoryScript.CHAPTERS, unlocked())
+	title.chapter_pressed.connect(play_chapter)
 	return title
+
+
+func unlocked() -> int:
+	var cfg := ConfigFile.new()
+	cfg.load(SAVE)
+	return int(cfg.get_value("progress", "chapter", 1))
+
+
+func _unlock(n: int) -> void:
+	if n <= unlocked():
+		return
+	var cfg := ConfigFile.new()
+	cfg.load(SAVE)
+	cfg.set_value("progress", "chapter", n)
+	cfg.save(SAVE)
 
 
 ## Cross-fades to a new screen. Rooms (Node2D) live in World, UI screens in the Screens layer.
 func _show(next: Node, instant := false) -> void:
 	if _switching:
-		next.queue_free()
-		return
+		await get_tree().create_timer(0.8).timeout
 	_switching = true
 	if not instant:
 		var out := create_tween()
