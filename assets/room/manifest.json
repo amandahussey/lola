@@ -1,0 +1,790 @@
+{
+ "room_size": [
+  3656,
+  2306
+ ],
+ "items": [
+  {
+   "id": "tights",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 4,
+   "tex": "res://assets/room/items/tights.png",
+   "pos": [
+    1410.0,
+    2072.6
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/tights.png"
+  },
+  {
+   "id": "pajamas",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 23,
+   "tex": "res://assets/room/items/pajamas.png",
+   "pos": [
+    1538.2,
+    1759.5
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pajamas.png"
+  },
+  {
+   "id": "bed_shirt",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 44,
+   "tex": "res://assets/room/items/bed_shirt.png",
+   "pos": [
+    1033.9,
+    1379.6
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/bed_shirt.png"
+  },
+  {
+   "id": "pile_58",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 58,
+   "tex": "res://assets/room/items/pile_58.png",
+   "pos": [
+    717.8,
+    2041.9
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_58.png"
+  },
+  {
+   "id": "pile_59",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 59,
+   "tex": "res://assets/room/items/pile_59.png",
+   "pos": [
+    660.4,
+    2084.2
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_59.png"
+  },
+  {
+   "id": "pile_60",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 60,
+   "tex": "res://assets/room/items/pile_60.png",
+   "pos": [
+    552.8,
+    2068.9
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_60.png"
+  },
+  {
+   "id": "pile_61",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 61,
+   "tex": "res://assets/room/items/pile_61.png",
+   "pos": [
+    589.5,
+    2089.5
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_61.png"
+  },
+  {
+   "id": "pile_62",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 62,
+   "tex": "res://assets/room/items/pile_62.png",
+   "pos": [
+    676.1,
+    2072.2
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_62.png"
+  },
+  {
+   "id": "pile_63",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 63,
+   "tex": "res://assets/room/items/pile_63.png",
+   "pos": [
+    687.4,
+    2056.1
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_63.png"
+  },
+  {
+   "id": "pile_64",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 64,
+   "tex": "res://assets/room/items/pile_64.png",
+   "pos": [
+    682.5,
+    2009.6
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_64.png"
+  },
+  {
+   "id": "pile_65",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 65,
+   "tex": "res://assets/room/items/pile_65.png",
+   "pos": [
+    760.1,
+    2103.0
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_65.png"
+  },
+  {
+   "id": "pile_66",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 66,
+   "tex": "res://assets/room/items/pile_66.png",
+   "pos": [
+    607.5,
+    2084.2
+   ],
+   "floor": true,
+   "closeup": "res://assets/room/closeup/pile_66.png"
+  },
+  {
+   "id": "chair_98",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 98,
+   "tex": "res://assets/room/items/chair_98.png",
+   "pos": [
+    2593.1,
+    1475.2
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/chair_98.png"
+  },
+  {
+   "id": "chair_99",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 99,
+   "tex": "res://assets/room/items/chair_99.png",
+   "pos": [
+    2662.5,
+    1460.6
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/chair_99.png"
+  },
+  {
+   "id": "chair_100",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 100,
+   "tex": "res://assets/room/items/chair_100.png",
+   "pos": [
+    2645.6,
+    1371.8
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/chair_100.png"
+  },
+  {
+   "id": "chair_101",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 101,
+   "tex": "res://assets/room/items/chair_101.png",
+   "pos": [
+    2609.6,
+    1167.0
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/chair_101.png"
+  },
+  {
+   "id": "chair_102",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 102,
+   "tex": "res://assets/room/items/chair_102.png",
+   "pos": [
+    2651.6,
+    1348.5
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/chair_102.png"
+  },
+  {
+   "id": "chair_103",
+   "kind": "fold",
+   "dest": "dresser",
+   "z": 103,
+   "tex": "res://assets/room/items/chair_103.png",
+   "pos": [
+    2621.2,
+    1414.9
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/chair_103.png"
+  },
+  {
+   "id": "throw_blanket",
+   "kind": "fold",
+   "dest": "bed_foot",
+   "z": 46,
+   "tex": "res://assets/room/items/throw_blanket.png",
+   "pos": [
+    1009.1,
+    1797.4
+   ],
+   "floor": false,
+   "closeup": "res://assets/room/closeup/throw_blanket.png"
+  },
+  {
+   "id": "duvet",
+   "kind": "fold",
+   "dest": "make_bed",
+   "z": 42,
+   "tex": "res://assets/room/items/duvet.png",
+   "pos": [
+    870.8,
+    1571.6
+   ],
+   "floor": false
+  },
+  {
+   "id": "teddy",
+   "kind": "tap",
+   "dest": "bed_teddy",
+   "z": 88,
+   "tex": "res://assets/room/items/teddy.png",
+   "pos": [
+    458.2,
+    1759.9
+   ],
+   "floor": true
+  },
+  {
+   "id": "flower",
+   "kind": "tap",
+   "dest": "bed",
+   "z": 45,
+   "tex": "res://assets/room/items/flower.png",
+   "pos": [
+    258.4,
+    2070.8
+   ],
+   "floor": true
+  },
+  {
+   "id": "butterfly",
+   "kind": "tap",
+   "dest": "bed",
+   "z": 107,
+   "tex": "res://assets/room/items/butterfly.png",
+   "pos": [
+    1300.9,
+    1799.2
+   ],
+   "floor": true
+  },
+  {
+   "id": "cloud",
+   "kind": "tap",
+   "dest": "bed",
+   "z": 117,
+   "tex": "res://assets/room/items/cloud.png",
+   "pos": [
+    2158.5,
+    1114.1
+   ],
+   "floor": true
+  },
+  {
+   "id": "bunny",
+   "kind": "tap",
+   "dest": "bed",
+   "z": 116,
+   "tex": "res://assets/room/items/bunny.png",
+   "pos": [
+    2720.2,
+    1984.1
+   ],
+   "floor": true
+  },
+  {
+   "id": "cat",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 118,
+   "tex": "res://assets/room/items/cat.png",
+   "pos": [
+    3047.2,
+    1658.6
+   ],
+   "floor": true
+  },
+  {
+   "id": "ball",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 90,
+   "tex": "res://assets/room/items/ball.png",
+   "pos": [
+    3511.1,
+    1725.8
+   ],
+   "floor": true
+  },
+  {
+   "id": "boat",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 83,
+   "tex": "res://assets/room/items/boat.png",
+   "pos": [
+    2045.6,
+    1265.6
+   ],
+   "floor": true
+  },
+  {
+   "id": "teacup_a",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 84,
+   "tex": "res://assets/room/items/teacup_a.png",
+   "pos": [
+    3042.4,
+    1957.5
+   ],
+   "floor": true
+  },
+  {
+   "id": "teacup_b",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 85,
+   "tex": "res://assets/room/items/teacup_b.png",
+   "pos": [
+    2844.8,
+    1900.1
+   ],
+   "floor": true
+  },
+  {
+   "id": "block_a",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 86,
+   "tex": "res://assets/room/items/block_a.png",
+   "pos": [
+    2832.4,
+    1639.9
+   ],
+   "floor": true
+  },
+  {
+   "id": "block_b",
+   "kind": "tap",
+   "dest": "toybox",
+   "z": 87,
+   "tex": "res://assets/room/items/block_b.png",
+   "pos": [
+    2715.4,
+    1725.4
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_72",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 72,
+   "tex": "res://assets/room/items/doll_72.png",
+   "pos": [
+    2391.4,
+    1402.9
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_73",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 73,
+   "tex": "res://assets/room/items/doll_73.png",
+   "pos": [
+    2209.9,
+    1422.0
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_74",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 74,
+   "tex": "res://assets/room/items/doll_74.png",
+   "pos": [
+    2284.9,
+    1452.0
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_75",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 75,
+   "tex": "res://assets/room/items/doll_75.png",
+   "pos": [
+    2223.8,
+    1541.6
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_76",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 76,
+   "tex": "res://assets/room/items/doll_76.png",
+   "pos": [
+    2441.6,
+    1555.1
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_77",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 77,
+   "tex": "res://assets/room/items/doll_77.png",
+   "pos": [
+    2136.8,
+    1613.2
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_78",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 78,
+   "tex": "res://assets/room/items/doll_78.png",
+   "pos": [
+    2159.6,
+    1379.6
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_79",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 79,
+   "tex": "res://assets/room/items/doll_79.png",
+   "pos": [
+    2318.2,
+    1553.2
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_80",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 80,
+   "tex": "res://assets/room/items/doll_80.png",
+   "pos": [
+    2386.5,
+    1516.5
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_81",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 81,
+   "tex": "res://assets/room/items/doll_81.png",
+   "pos": [
+    2221.9,
+    1626.8
+   ],
+   "floor": true
+  },
+  {
+   "id": "doll_82",
+   "kind": "tap",
+   "dest": "dollhouse",
+   "z": 82,
+   "tex": "res://assets/room/items/doll_82.png",
+   "pos": [
+    2151.4,
+    1485.8
+   ],
+   "floor": true
+  },
+  {
+   "id": "coloring_book",
+   "kind": "tap",
+   "dest": "desk",
+   "z": 114,
+   "tex": "res://assets/room/items/coloring_book.png",
+   "pos": [
+    2428.1,
+    1787.2
+   ],
+   "floor": true
+  },
+  {
+   "id": "notebook",
+   "kind": "tap",
+   "dest": "desk",
+   "z": 115,
+   "tex": "res://assets/room/items/notebook.png",
+   "pos": [
+    222.4,
+    1621.5
+   ],
+   "floor": true
+  },
+  {
+   "id": "pencil",
+   "kind": "tap",
+   "dest": "pencil_cup",
+   "z": 94,
+   "tex": "res://assets/room/items/pencil.png",
+   "pos": [
+    2877.8,
+    1753.1
+   ],
+   "floor": true
+  },
+  {
+   "id": "wrapper",
+   "kind": "tap",
+   "dest": "trash",
+   "z": 106,
+   "tex": "res://assets/room/items/wrapper.png",
+   "pos": [
+    3186.4,
+    1802.6
+   ],
+   "floor": true
+  },
+  {
+   "id": "dresser_sock",
+   "kind": "tap",
+   "dest": "tuck",
+   "z": 26,
+   "tex": "res://assets/room/items/dresser_sock.png",
+   "pos": [
+    1343.6,
+    1103.6
+   ],
+   "floor": false
+  }
+ ],
+ "overlays": [
+  {
+   "tex": "res://assets/room/overlays/layer_43.png",
+   "z": 43,
+   "pos": [
+    716.2,
+    1768.5
+   ]
+  }
+ ],
+ "dests": {
+  "dresser": [
+   1308.8,
+   997.5
+  ],
+  "toybox": [
+   2212.5,
+   885.0
+  ],
+  "dollhouse": [
+   2332.5,
+   1267.5
+  ],
+  "trash": [
+   3315.0,
+   1672.5
+  ],
+  "pencil_cup": [
+   3184.5,
+   1200.0
+  ],
+  "bed_foot": [
+   952.5,
+   1680.0
+  ]
+ },
+ "teddy_clean": {
+  "tex": "res://assets/room/teddy_clean.png",
+  "pos": [
+   776.6,
+   1109.2
+  ]
+ },
+ "bounce": {
+  "dresser": [
+   1307.2,
+   1069.5
+  ],
+  "toybox": [
+   2237.2,
+   945.8
+  ],
+  "dollhouse": [
+   2337.0,
+   1265.2
+  ],
+  "trash": [
+   3315.0,
+   1755.0
+  ],
+  "pencil_cup": [
+   3184.5,
+   1250.2
+  ]
+ },
+ "slots": {
+  "flower": [
+   558.8,
+   1102.5,
+   0.42,
+   -8
+  ],
+  "butterfly": [
+   967.5,
+   1170.0,
+   0.55,
+   6
+  ],
+  "cloud": [
+   637.5,
+   1327.5,
+   0.75,
+   0
+  ],
+  "bunny": [
+   1080.0,
+   1290.0,
+   0.8,
+   8
+  ],
+  "coloring_book": [
+   3045.0,
+   1248.8,
+   0.4,
+   -10
+  ],
+  "notebook": [
+   3045.0,
+   1218.8,
+   0.36,
+   6
+  ],
+  "throw_blanket": [
+   939.8,
+   1560.0,
+   1.0,
+   -16
+  ]
+ },
+ "drawer": {
+  "tex": "res://assets/room/props/drawer_front.png",
+  "pos": [
+   1220.6,
+   1011.4
+  ],
+  "quad": [
+   [
+    1138.5,
+    991.5
+   ],
+   [
+    1299.8,
+    961.5
+   ],
+   [
+    1302.0,
+    1032.0
+   ],
+   [
+    1143.0,
+    1060.5
+   ]
+  ],
+  "pull": [
+   31.5,
+   40.5
+  ]
+ },
+ "props": {
+  "dresser": {
+   "tex": "res://assets/room/props/dresser.png",
+   "z": 25,
+   "bottom": [
+    1307.2,
+    1332.8
+   ]
+  },
+  "toybox": {
+   "tex": "res://assets/room/props/toybox.png",
+   "z": 22,
+   "bottom": [
+    2237.2,
+    1183.5
+   ]
+  },
+  "dollhouse": {
+   "tex": "res://assets/room/props/dollhouse.png",
+   "z": 70,
+   "bottom": [
+    2337.0,
+    1404.8
+   ]
+  },
+  "trash": {
+   "tex": "res://assets/room/props/trash.png",
+   "z": 105,
+   "bottom": [
+    3315.0,
+    1851.8
+   ]
+  },
+  "pencil_cup": {
+   "tex": "res://assets/room/props/pencil_cup.png",
+   "z": 92,
+   "bottom": [
+    3184.5,
+    1314.0
+   ],
+   "full": {
+    "tex": "res://assets/room/props/pencil_cup_full.png",
+    "bottom": [
+     3184.5,
+     1314.0
+    ]
+   }
+  }
+ }
+}

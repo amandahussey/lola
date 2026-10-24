@@ -1,0 +1,92 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/title.gd" id="1_title"]
+[ext_resource type="Texture2D" path="res://assets/story/title_lola.jpg" id="2_lola"]
+[ext_resource type="FontFile" path="res://assets/fonts/Sniglet-ExtraBold.ttf" id="3_sniglet"]
+[ext_resource type="Texture2D" path="res://assets/ui/ring.png" id="4_ring"]
+
+[sub_resource type="LabelSettings" id="title_settings"]
+font = ExtResource("3_sniglet")
+font_size = 120
+font_color = Color(1, 0.98, 1, 1)
+outline_size = 26
+outline_color = Color(0.231, 0.149, 0.302, 1)
+shadow_size = 0
+shadow_color = Color(0.149, 0.102, 0.18, 0.5)
+shadow_offset = Vector2(6, 8)
+
+[node name="Title" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.467, 0.349, 0.592, 1)
+
+[node name="Lola" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.42
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_lola")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Column" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.44
+anchor_right = 0.98
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="Ring" type="TextureRect" parent="Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_ring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="Column"]
+layout_mode = 2
+text = "Lola and the
+Lost Ring"
+label_settings = SubResource("title_settings")
+horizontal_alignment = 1
+
+[node name="Tagline" type="Label" parent="Column"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 52
+text = "Swipe to fold, tap to tidy,
+help Lola clean to find the ring!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayButton" type="Button" parent="Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 72
+text = "Play"

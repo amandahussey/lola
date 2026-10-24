@@ -1,0 +1,11 @@
+.godot/
+/android/
+*.apk
+*.aab
+tools/art_pipeline/venv/
+tools/art_pipeline/proc/
+tools/art_pipeline/cache/
+tools/art_pipeline/*.npy
+tools/art_pipeline/*.pkl
+.DS_Store
+__pycache__/

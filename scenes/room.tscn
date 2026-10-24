@@ -1,0 +1,132 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Texture2D" path="res://assets/room/background.png" id="2_bg"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
+[ext_resource type="Texture2D" path="res://assets/ui/lola_worried.png" id="4_lola"]
+[ext_resource type="Texture2D" path="res://assets/ui/sparkle.png" id="5_sparkle"]
+
+[sub_resource type="StyleBoxFlat" id="bubble_style"]
+content_margin_left = 34.0
+content_margin_top = 18.0
+content_margin_right = 34.0
+content_margin_bottom = 22.0
+bg_color = Color(0.98, 0.957, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.149, 0.102, 0.18, 1)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="bar_bg"]
+bg_color = Color(0.98, 0.957, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.149, 0.102, 0.18, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Room" type="Node2D"]
+script = ExtResource("1_room")
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -100
+texture = ExtResource("2_bg")
+centered = false
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_hud")
+
+[node name="Margin" type="MarginContainer" parent="HUD"]
+unique_name_in_owner = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 220.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+
+[node name="Top" type="HBoxContainer" parent="HUD/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+
+[node name="LolaBadge" type="TextureRect" parent="HUD/Margin/Top"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 170)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("4_lola")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Bubble" type="PanelContainer" parent="HUD/Margin/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("bubble_style")
+
+[node name="BubbleLabel" type="Label" parent="HUD/Margin/Top/Bubble"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "..."
+autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="HUD/Margin/Top"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Progress" type="VBoxContainer" parent="HUD/Margin/Top"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="CountLabel" type="Label" parent="HUD/Margin/Top/Progress"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.98, 1, 1)
+theme_override_colors/font_outline_color = Color(0.231, 0.149, 0.302, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 46
+text = "Mess left: 0"
+horizontal_alignment = 2
+
+[node name="Bar" type="ProgressBar" parent="HUD/Margin/Top/Progress"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 40)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("bar_bg")
+show_percentage = false
+
+[node name="HintButton" type="Button" parent="HUD/Margin/Top"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 120)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 40
+text = "Hint"
+icon = ExtResource("5_sparkle")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true

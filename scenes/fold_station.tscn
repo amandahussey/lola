@@ -1,0 +1,118 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fold_station.gd" id="1_fold"]
+
+[sub_resource type="StyleBoxFlat" id="card_style"]
+bg_color = Color(0.93, 0.894, 0.973, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.149, 0.102, 0.18, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+shadow_color = Color(0.1, 0.05, 0.15, 0.35)
+shadow_size = 18
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="dot_style"]
+bg_color = Color(0.98, 0.957, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.149, 0.102, 0.18, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="FoldStation" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_fold")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.22, 0.6)
+
+[node name="Card" type="Panel" parent="."]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_left = 0.14
+anchor_top = 0.06
+anchor_right = 0.86
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("card_style")
+
+[node name="Prompt" type="Label" parent="Card"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 24.0
+offset_bottom = 110.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64
+text = "Swipe left to fold!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Dots" type="HBoxContainer" parent="Card"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -78.0
+offset_right = 90.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Dot1" type="Panel" parent="Card/Dots"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("dot_style")
+
+[node name="Dot2" type="Panel" parent="Card/Dots"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("dot_style")
+
+[node name="Dot3" type="Panel" parent="Card/Dots"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("dot_style")
+
+[node name="CloseButton" type="Button" parent="Card"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 128.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 60
+text = "X"
