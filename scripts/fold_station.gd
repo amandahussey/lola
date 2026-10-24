@@ -12,6 +12,12 @@ const STEPS := ["left", "right", "up"]
 const PROMPTS := {"left": "Swipe left to fold!", "right": "Now swipe right!", "up": "Swipe up!"}
 const ARROW_ANGLE := {"left": PI, "right": 0.0, "up": -PI / 2}
 const TEX_ARROW := preload("res://assets/ui/arrow.png")
+const NedHelper := preload("res://scripts/ned_helper.gd")
+const NED_LINES := {
+	"left": "Fold one side over. Swipe left!",
+	"right": "Now the other side!",
+	"up": "Last one! Swipe up!",
+}
 const TEX_SPARKLE := preload("res://assets/ui/sparkle.png")
 const INK := Color(0.149, 0.102, 0.18)
 const BACK_SIDE := Color(0.84, 0.82, 0.9)  # the underside of the fabric is a little darker
@@ -28,6 +34,7 @@ var _busy := true
 var _holder := Node2D.new()
 var _sprite := Sprite2D.new()
 var _arrow := Sprite2D.new()
+var _ned := NedHelper.new()
 var _arrow_tween: Tween
 var _touch_start := Vector2.ZERO
 var _tracking := false
@@ -49,6 +56,11 @@ func _ready() -> void:
 	_arrow.texture = TEX_ARROW
 	_arrow.modulate.a = 0.0
 	add_child(_arrow)
+	_ned.ned_height = 680.0
+	_ned.peek = 560.0
+	_ned.bubble_width = 300.0
+	_ned.bubble_above = true
+	add_child(_ned)
 	await get_tree().process_frame
 	var card := _card.get_global_rect()
 	var area := Vector2(card.size.x * 0.8, card.size.y * 0.62)
@@ -66,6 +78,7 @@ func _ready() -> void:
 func _show_step() -> void:
 	var dir: String = STEPS[_step]
 	_prompt.text = PROMPTS[dir]
+	_ned.say(NED_LINES[dir], 0.0, "left")
 	for i in _dots.get_child_count():
 		var dot: Panel = _dots.get_child(i)
 		dot.self_modulate = Color(0.62, 0.42, 0.85) if i < _step else Color.WHITE
@@ -121,6 +134,7 @@ func _evaluate(swipe: Vector2) -> void:
 ## Wrong way (or just a tap): wiggle and repeat the instruction.
 func _nudge() -> void:
 	Sfx.play("boop")
+	_ned.say("Oops! Try the way the arrow goes.", 0.0, "left")
 	var tw := create_tween()
 	for a in [0.06, -0.05, 0.03, 0.0]:
 		tw.tween_property(_holder, "rotation", a, 0.06)
@@ -244,6 +258,7 @@ func _finish() -> void:
 	for dot in _dots.get_children():
 		dot.self_modulate = Color(0.62, 0.42, 0.85)
 	_prompt.text = "Neatly folded!"
+	_ned.say("Perfect fold! Just like I do it.", 0.0, "left")
 	Sfx.play("sparkle", 0.0, -6.0)
 	_sparkle(_holder.position, 10)
 	var pop := create_tween()

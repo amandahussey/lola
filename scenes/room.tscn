@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/room/background.png" id="2_bg"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
 [ext_resource type="Texture2D" path="res://assets/ui/lola_worried.png" id="4_lola"]
-[ext_resource type="Texture2D" path="res://assets/ui/sparkle.png" id="5_sparkle"]
+[ext_resource type="Texture2D" path="res://assets/ui/ned_badge.png" id="5_ned"]
 
 [sub_resource type="StyleBoxFlat" id="bubble_style"]
 content_margin_left = 34.0
@@ -121,12 +121,12 @@ show_percentage = false
 
 [node name="HintButton" type="Button" parent="HUD/Margin/Top"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 120)
+custom_minimum_size = Vector2(170, 170)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 40
-text = "Hint"
-icon = ExtResource("5_sparkle")
+theme_override_font_sizes/font_size = 34
+text = "Ask Ned"
+icon = ExtResource("5_ned")
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true

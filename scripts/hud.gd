@@ -1,7 +1,9 @@
 extends CanvasLayer
-## Lola's speech bubble + portrait, the "mess left" meter, and the hint button.
+## Lola's speech bubble + portrait, the "mess left" meter, the Ask Ned button, and Ned himself.
 
 signal hint_pressed
+
+const NedHelper := preload("res://scripts/ned_helper.gd")
 
 const MOODS := {
 	"worried": preload("res://assets/ui/lola_worried.png"),
@@ -18,6 +20,7 @@ const MOODS := {
 @onready var _hint: Button = %HintButton
 
 var _say_id := 0
+var _ned := NedHelper.new()
 var _mood := ""
 
 
@@ -30,6 +33,7 @@ func _ready() -> void:
 	fill.set_border_width_all(5)
 	fill.border_color = Color(0.149, 0.102, 0.18)
 	_bar.add_theme_stylebox_override("fill", fill)
+	add_child(_ned)
 	_apply_safe_area()
 	get_viewport().size_changed.connect(_apply_safe_area)
 
@@ -74,6 +78,15 @@ func say(text: String, hold := 3.5) -> void:
 	await get_tree().create_timer(hold).timeout
 	if my_id == _say_id and is_instance_valid(_bubble):
 		create_tween().tween_property(_bubble, "modulate:a", 0.0, 0.4)
+
+
+## Ned pops up from the bottom on `side` ("left"/"right") with a tip or a cheer.
+func ned_say(text: String, hold := 3.5, side := "right") -> void:
+	_ned.say(text, hold, side)
+
+
+func ned_hide() -> void:
+	_ned.hide_now()
 
 
 func set_progress(remaining: int, total: int) -> void:

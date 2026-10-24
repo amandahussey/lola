@@ -24,7 +24,10 @@ file and pages from the book.
    - In the close-up, a swipe the wrong way just wiggles the clothes, and the X closes
      it without folding.
    - Pinch or scroll to zoom, and drag on empty floor to look around.
-   - **Hint** button (and an automatic hint after 9 s with no progress).
+   - **Ned helps!** Tap **Ask Ned** (or wait 9 s) and Ned pops up from the bottom of
+     the screen with a tip about one thing to tidy, which glows and sparkles. He
+     introduces the game, cheers at the halfway point and when the ring is found, and
+     coaches each swipe in the folding close-up.
 3. Like in the book, when the **very last thing** is put away, the ring shimmers
    **right there on the ground** where it was. Tap it!
 4. Ring close-up spread → Lola and Ned high-five → Play again.
@@ -54,13 +57,13 @@ project.godot
 scenes/   main.tscn (flow), title.tscn, story_card.tscn, room.tscn (the game + HUD),
           fold_station.tscn (the close-up folding view)
 scripts/  main.gd, title.gd, story_card.gd, room.gd (gameplay), fold_station.gd,
-          mess_item.gd, hud.gd, sfx.gd
+          ned_helper.gd (Ned popping up with tips), mess_item.gd, hud.gd, sfx.gd
 ui/       theme.tres (fonts + button style)
 assets/
   room/     background.png (the *clean* room), items/ (each piece of mess),
             closeup/ (full-size clothes for folding), props/ (toy box, drawer, pencil cups), overlays/, manifest.json (positions + rules)
   story/    book pages used for the intro and ending
-  ui/       Lola portraits (worried / happy / joy), ring, sparkle, glow
+  ui/       Lola portraits (worried / happy / joy), Ned (full + badge), ring, sparkle, glow
   audio/    synthesized sound effects + music-box loop (original, royalty-free)
   fonts/    Patrick Hand + Sniglet (SIL Open Font License)
 tools/
@@ -71,6 +74,8 @@ tools/
 ## Changing things
 
 - **Lola's lines:** search `_hud.say(` in `scripts/room.gd`.
+- **Ned's tips:** `_ned_tip()` in `scripts/room.gd`; his folding lines are `NED_LINES` in
+  `scripts/fold_station.gd`. `tools/art_pipeline/ned_art.py` re-cuts his picture from the book.
 - **Where tidied toys end up:** the `SLOTS` and `D` (destinations) tables in
   `tools/art_pipeline/export.py`. Re-run the export (below), or edit the numbers in
   `assets/room/manifest.json` directly.

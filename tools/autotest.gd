@@ -34,6 +34,12 @@ func _run() -> void:
 	await _wait(1.6)
 	var room = _main.current_screen()
 	await _shot("03_room_start")
+	await _wait(4.2)
+	await _shot("03b_ned_intro")
+	room._show_hint()
+	await _wait(0.8)
+	await _shot("03c_ned_hint")
+	await _wait(3.6)
 	# Real input path: tap a toy...
 	await _touch_item(room, "ball", Vector2.ZERO)
 	# ...tap the tights to open the close-up, then fold with real swipes.

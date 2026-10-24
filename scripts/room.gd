@@ -62,7 +62,7 @@ func _intro_lines() -> void:
 	_hud.say("We could find it if I could actually see the ground...", 4.0)
 	await get_tree().create_timer(4.4).timeout
 	if _remaining == _total:
-		_hud.say("Tap clothes to fold them. Tap toys to tidy!", 5.0)
+		_hud.ned_say("I'll help, Lola! Tap clothes to fold them. Tap toys to tidy!", 5.0)
 
 
 func _build_room() -> void:
@@ -240,7 +240,7 @@ func _cheer() -> void:
 		_hud.say("Look, I can see the rug!", 3.0)
 	elif cleaned == int(_total * 0.5):
 		_hud.set_mood("happy")
-		_hud.say("Halfway there! Keep going!", 3.0)
+		_hud.ned_say("Halfway there! We make a great team!", 3.0, _ned_side_away_from(_last_spot))
 	elif cleaned == int(_total * 0.75):
 		_hud.say("So much cleaner! Is it here somewhere?", 3.0)
 
@@ -307,6 +307,7 @@ func _open_fold_station(item) -> void:
 		return
 	_modal = true
 	_idle = 0.0
+	_hud.ned_hide()
 	_cancel_gesture()
 	_touches.clear()
 	Sfx.play("pop")
@@ -549,6 +550,7 @@ func _collect_ring() -> void:
 	Sfx.play("win", 0.0)
 	_hud.set_mood("joy")
 	_hud.say("My ring! We found it!", 0.0)
+	_ned_cheer_ring()
 	_sparkle_burst(_ring.position, 16)
 	var tw := create_tween().set_parallel()
 	tw.tween_property(_ring, "scale", Vector2(1.6, 1.6), 0.9).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -589,14 +591,48 @@ func _show_hint() -> void:
 	item.wiggle()
 	_sparkle_burst(item.position, 3)
 	Sfx.play("boop", 0.0, -6.0)
+	_hud.ned_say(_ned_tip(item), 3.5, _ned_side_away_from(item.position))
+	if item.dest == "make_bed":
+		_swipe_hint(item)
+
+
+## Ned's tip for one piece of mess, in his kind, helpful voice.
+func _ned_tip(item) -> String:
+	var id: String = item.id
+	if id == "teddy":
+		return "Mr. Teddy wants to go back on the bed! Tap him."
+	if id in ["flower", "butterfly", "cloud", "bunny"]:
+		return "That cuddly one goes on the bed. Tap it!"
+	if id.begins_with("doll_"):
+		return "Those little doll things go in the dollhouse!"
+	if id in ["coloring_book", "notebook"]:
+		return "Books go on the desk. Tap it!"
+	if id == "pencil":
+		return "That pencil goes in the cup with the others!"
+	if id == "wrapper":
+		return "A wrapper! Tap it for the trash."
+	if id == "dresser_sock":
+		return "A sock is poking out of the drawer! Tap it."
+	if id == "duvet":
+		return "Swipe the blanket to make the bed!"
+	if id == "throw_blanket":
+		return "Let's fold that blanket. Tap it!"
 	if item.kind == "fold":
-		if item.dest == "make_bed":
-			_hud.say("Swipe to make the bed!", 2.5)
-			_swipe_hint(item)
-		else:
-			_hud.say("Tap this to fold it!", 2.5)
-	else:
-		_hud.say("Tap this to tidy it!", 2.5)
+		return "Clothes! Tap them and we'll fold them together."
+	var names := {"cat": "kitty", "ball": "ball", "boat": "boat", "teacup_a": "teacup",
+		"teacup_b": "teacup", "block_a": "block", "block_b": "block"}
+	return "Tap the %s to put it in the toy box!" % names.get(id, "toy")
+
+
+## Ned stands on the opposite side of the screen from what he's pointing at.
+func _ned_side_away_from(world_pos: Vector2) -> String:
+	var screen_x := (world_pos.x - _cam.position.x) * _cam.zoom.x + get_viewport_rect().size.x / 2
+	return "left" if screen_x > get_viewport_rect().size.x * 0.55 else "right"
+
+
+func _ned_cheer_ring() -> void:
+	await get_tree().create_timer(0.9).timeout
+	_hud.ned_say("You found it, Lola! I knew we would!", 0.0, _ned_side_away_from(_ring.position))
 
 
 func _swipe_hint(item) -> void:
